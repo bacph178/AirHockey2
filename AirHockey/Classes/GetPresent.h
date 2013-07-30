@@ -35,6 +35,7 @@ public:
     void menuSendEmail(CCObject *pSender);
     void menuBack(CCObject *pSender);
     bool is_email(std::string const& address);
+    bool isValidEmail(std::string str);
     int spc_email_isvalid(const char *address);
     void insertChar(char *xau,int index);
     void standardizeName(char *xau);

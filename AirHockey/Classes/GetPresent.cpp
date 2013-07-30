@@ -277,7 +277,7 @@ void GetPresent::onHttpRequestCompleted(CCNode *sender, void *data) {
         CCLog(document.GetParseError());
     }
     
-    if (strcmp(m_pUserEmail->getText(), "") != 0 && this->is_email(m_pUserEmail->getText()) &&
+    if (strcmp(m_pUserEmail->getText(), "") != 0 && this->isValidEmail(m_pUserEmail->getText()) &&
         this->spc_email_isvalid(m_pUserEmail->getText())) {
         CCHttpRequest * request = new CCHttpRequest();
         string name = GameManager::sharedGameManager()->getName();
@@ -312,6 +312,42 @@ void GetPresent::onHttpRequestCompleted(CCNode *sender, void *data) {
         emailFailMsg->runAction(CCSequence::create(showAction, hideAction, NULL));
     }
     d-=1;
+}
+bool GetPresent::isValidEmail(std::string email){
+    int length = email.length();
+    if (length >= 9 && ((email[0] > 64 && email[0] < 91) ||
+                        (email[0] > 96 && email[0] < 123)) && email[length - 1] != '.') {
+        int count1 = 0;
+        int count2 = 0;
+        int count3 = 0;
+        int count4 = 0;
+        for (int i = 0; i < length; i++) {
+            if (email[i] == '@') {
+                count3++;
+            }
+            if ((email[i] < 48 && email[i] != 46) || (email[i] > 57 && email[i] < 64) ||
+                (email[i] >90 && email[i] < 97 && email[i] != 95) || (email[i] >122)) {
+                count4++;
+            }
+            if (email[i] == '.') {
+                if (i < email.find('@')) {
+                    count1++;
+                } else {
+                    count2++;
+                }
+            }
+        }
+        if (count3 == 1 && count4 == 0 && count1 < 2 && count2 > 0 &&
+            ( email.find('@') > 3 && email.find('@') < 32)) {
+            return true;
+        } else {
+            return false;
+        }
+        
+    } else {
+        return false;
+    }
+
 }
 
 
